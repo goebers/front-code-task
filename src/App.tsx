@@ -8,6 +8,21 @@ import "./App.css";
 const App: FC = () => {
   const [projects, setProjects] = useState(defaultProjects);
 
+  const bgColors = [
+    "#789395",
+    "#94B49F",
+    "#B4CFB0",
+    "#E5E3C9",
+    "#1572A1",
+    "#9AD0EC",
+    "#EFDAD7",
+    "#E3BEC6",
+  ];
+
+  const getRandomBgColor = (): string => {
+    return bgColors[Math.floor(Math.random() * bgColors.length)];
+  };
+
   return (
     <div className="app container">
       <Header />
@@ -19,7 +34,8 @@ const App: FC = () => {
               rating={project.rating}
               url={project.url}
               id={project.id}
-              created_at={project.created_at}
+              createdAt={project.created_at}
+              bgColor={getRandomBgColor()}
               removeHandler={(id) =>
                 setProjects(projects.filter((p) => p.id !== id))
               }

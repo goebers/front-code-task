@@ -8,7 +8,8 @@ interface ProjectCardProps {
   rating: number;
   url: string;
   id: string;
-  created_at: string;
+  createdAt: string;
+  bgColor: string;
   removeHandler: (id: string) => void;
 }
 
@@ -17,15 +18,16 @@ const ProjectCard: FC<ProjectCardProps> = ({
   rating,
   url,
   id,
-  created_at,
+  createdAt,
+  bgColor,
   removeHandler,
 }) => (
   <a href={url} target="_blank" rel="noreferrer">
-    <Card title={name} className="card">
+    <Card title={name} className="card" style={{ backgroundColor: bgColor }}>
       <p>{rating}</p>
       <p>{url}</p>
       <p>{id}</p>
-      <p>{created_at}</p>
+      <p>{createdAt}</p>
       <Button
         danger
         icon={<CloseOutlined />}
