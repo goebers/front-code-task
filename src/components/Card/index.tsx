@@ -7,10 +7,21 @@ interface CardProps {
   url: string;
   id: string;
   created_at: string;
+  removeHandler: (id: string) => void;
 }
 
-const Card: FC<CardProps> = ({ name, rating, url, id, created_at }) => (
+const Card: FC<CardProps> = ({
+  name,
+  rating,
+  url,
+  id,
+  created_at,
+  removeHandler,
+}) => (
   <div className="card">
+    <div className="remove" onClick={() => removeHandler(id)}>
+      X
+    </div>
     <a href={url} target="_blank" rel="noreferrer">
       <p>{name}</p>
       <p>{rating}</p>

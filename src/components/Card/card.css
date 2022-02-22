@@ -1,5 +1,6 @@
 .card {
   display: flex;
+  position: relative;
   height: auto;
   flex: 1 0 auto;
   flex-direction: column;
@@ -10,4 +11,22 @@
 
 .card:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.remove {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 15px;
+  width: 15px;
+  border: 1px black;
+}
+
+.card:hover .remove {
+  display: flex;
+}
+
+.card a:visited {
+  color: inherit;
 }
