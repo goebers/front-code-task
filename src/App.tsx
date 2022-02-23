@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Row, Col } from "antd";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";

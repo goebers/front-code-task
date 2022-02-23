@@ -1,9 +1,9 @@
-import React, { FC } from "react";
-import "./header.css";
+import { FC } from "react";
+import { Typography } from "antd";
 
 const Header: FC = () => (
-  <header className="app-header">
-    <h1>My cool GitHub projects</h1>
+  <header>
+    <Typography.Title>My cool GitHub projects</Typography.Title>
   </header>
 );
 
