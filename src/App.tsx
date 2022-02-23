@@ -1,12 +1,24 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";
 import defaultProjects from "./projects.json";
-import "./App.css";
+
+interface Project {
+  name: string;
+  rating: number;
+  url: string;
+  id: string;
+  created_at: string;
+}
 
 const App: FC = () => {
-  const [projects, setProjects] = useState(defaultProjects);
+  const initialProjects =
+    localStorage.getItem("projects") !== null
+      ? (JSON.parse(localStorage.getItem("projects") || "") as Project[])
+      : defaultProjects;
+
+  const [projects, setProjects] = useState(initialProjects);
 
   const bgColors = [
     "#789395",
@@ -25,8 +37,12 @@ const App: FC = () => {
     return bgColors[Math.floor(Math.random() * bgColors.length)];
   };
 
+  useEffect(() => {
+    localStorage.setItem("projects", JSON.stringify(projects));
+  }, [projects]);
+
   return (
-    <div className="app container">
+    <div style={{ margin: "auto", maxWidth: "1600px" }}>
       <Header />
       <Row gutter={[16, 16]}>
         {projects.map((project) => (
