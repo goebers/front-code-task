@@ -13,10 +13,12 @@ const App: FC = () => {
     "#94B49F",
     "#B4CFB0",
     "#E5E3C9",
-    "#1572A1",
     "#9AD0EC",
     "#EFDAD7",
     "#E3BEC6",
+    "#EAEAEA",
+    "#F9F9F9",
+    "#FBF7F0",
   ];
 
   const getRandomBgColor = (): string => {

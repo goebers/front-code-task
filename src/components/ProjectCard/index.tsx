@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Card, Button } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import "./projectCard.css";
+import { DeleteFilled } from "@ant-design/icons";
 
 interface ProjectCardProps {
   name: string;
@@ -23,21 +22,27 @@ const ProjectCard: FC<ProjectCardProps> = ({
   removeHandler,
 }) => (
   <a href={url} target="_blank" rel="noreferrer">
-    <Card title={name} className="card" style={{ backgroundColor: bgColor }}>
+    <Card
+      hoverable
+      title={name}
+      style={{ backgroundColor: bgColor }}
+      headStyle={{ fontWeight: 700 }}
+      extra={
+        <Button
+          danger
+          type="primary"
+          icon={<DeleteFilled />}
+          onClick={(event) => {
+            event.preventDefault();
+            removeHandler(id);
+          }}
+        />
+      }
+    >
       <p>{rating}</p>
       <p>{url}</p>
       <p>{id}</p>
       <p>{createdAt}</p>
-      <Button
-        danger
-        icon={<CloseOutlined />}
-        onClick={(event) => {
-          event.preventDefault();
-          removeHandler(id);
-        }}
-      >
-        Remove
-      </Button>
     </Card>
   </a>
 );
