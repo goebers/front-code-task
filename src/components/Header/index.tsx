@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Typography } from "antd";
 
-const Header: FC = () => (
+const Header: FC<React.RefAttributes<HTMLDivElement>> = () => (
   <header>
-    <Typography.Title>My cool GitHub projects</Typography.Title>
+    <Typography.Title>List of cool GitHub projects</Typography.Title>
   </header>
 );
 

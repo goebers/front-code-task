@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Empty, Typography, Divider } from "antd";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";
 import Add from "./components/Add";
@@ -13,7 +13,7 @@ const App: FC = () => {
       ? (JSON.parse(localStorage.getItem("projects") || "") as Project[])
       : defaultProjects;
 
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
 
   const bgColors = [
     "#789395",
@@ -32,6 +32,40 @@ const App: FC = () => {
     return bgColors[Math.floor(Math.random() * bgColors.length)];
   };
 
+  const sortProjects = (sortType: string) => {
+    // TODO: make this nicer?
+    if (sortType === "date-asc") {
+      setProjects(
+        projects
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(a.created_at).valueOf() -
+              new Date(b.created_at).valueOf()
+          )
+      );
+    } else if (sortType === "date-desc") {
+      setProjects(
+        projects
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(b.created_at).valueOf() -
+              new Date(a.created_at).valueOf()
+          )
+      );
+    } else if (sortType === "rating-asc") {
+      setProjects(projects.slice().sort((a, b) => a.rating - b.rating));
+    } else if (sortType === "rating-desc") {
+      setProjects(projects.slice().sort((a, b) => b.rating - a.rating));
+    }
+  };
+
+  // Initial page load hook
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => sortProjects("rating-asc"), []);
+
+  // Hook for when projects changes
   useEffect(() => {
     localStorage.setItem("projects", JSON.stringify(projects));
   }, [projects]);
@@ -39,7 +73,7 @@ const App: FC = () => {
   return (
     <div>
       <Header />
-      <Row>
+      <Row style={{ margin: "2rem 0", alignItems: "flex-end" }}>
         <Col xs={24} lg={12}>
           <Add
             addHandler={(newProject) =>
@@ -48,25 +82,38 @@ const App: FC = () => {
           />
         </Col>
         <Col xs={24} lg={12}>
-          <Filter />
+          <Filter sortHandler={(sortVal) => sortProjects(sortVal)} />
         </Col>
       </Row>
+      <Divider />
       <Row gutter={[16, 16]}>
-        {projects.map((project) => (
-          <Col key={project.id} xs={24} md={12} lg={6}>
-            <ProjectCard
-              name={project.name}
-              rating={project.rating}
-              url={project.url}
-              id={project.id}
-              createdAt={project.created_at}
-              bgColor={getRandomBgColor()}
-              removeHandler={(id) =>
-                setProjects(projects.filter((p) => p.id !== id))
+        {projects.length > 0 ? (
+          projects.map((project) => (
+            <Col key={project.id} xs={24} md={12} lg={6}>
+              <ProjectCard
+                name={project.name}
+                rating={project.rating}
+                url={project.url}
+                id={project.id}
+                createdAt={project.created_at}
+                bgColor={getRandomBgColor()}
+                removeHandler={(id) =>
+                  setProjects(projects.filter((p) => p.id !== id))
+                }
+              />
+            </Col>
+          ))
+        ) : (
+          <Col flex={1}>
+            <Empty
+              description={
+                <Typography.Text strong>
+                  No projects? Try adding some..
+                </Typography.Text>
               }
             />
           </Col>
-        ))}
+        )}
       </Row>
     </div>
   );

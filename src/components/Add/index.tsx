@@ -9,7 +9,7 @@ interface AddProps {
 }
 
 const Add: FC<AddProps> = ({ addHandler }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [form] = Form.useForm();
 
   const isActualUrl = async (urlVal: string): Promise<boolean> => {
