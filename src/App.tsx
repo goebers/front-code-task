@@ -2,15 +2,10 @@ import { FC, useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";
+import Add from "./components/Add";
+import Filter from "./components/Sort";
 import defaultProjects from "./projects.json";
-
-interface Project {
-  name: string;
-  rating: number;
-  url: string;
-  id: string;
-  created_at: string;
-}
+import Project from "./project";
 
 const App: FC = () => {
   const initialProjects =
@@ -42,8 +37,16 @@ const App: FC = () => {
   }, [projects]);
 
   return (
-    <div style={{ margin: "auto", maxWidth: "1600px" }}>
+    <div>
       <Header />
+      <Row>
+        <Col xs={24} lg={12}>
+          <Add addHandler={(e) => console.log(e)} />
+        </Col>
+        <Col xs={24} lg={12}>
+          <Filter />
+        </Col>
+      </Row>
       <Row gutter={[16, 16]}>
         {projects.map((project) => (
           <Col key={project.id} xs={24} md={12} lg={6}>

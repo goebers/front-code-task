@@ -58,7 +58,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
           );
         })}
       </Typography.Paragraph>
-      <Typography.Paragraph italic mark type="secondary">
+      <Typography.Paragraph italic mark strong type="secondary">
         Date added: {format(new Date(createdAt), "dd/MM/yyyy")}
       </Typography.Paragraph>
     </Card>

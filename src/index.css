@@ -11,3 +11,14 @@ body {
   height: 100%;
   width: 100%;
 }
+
+#root {
+  margin: 0 1rem;
+  max-width: 1600px;
+}
+
+@media screen and (min-width: 1600px) {
+  #root {
+    margin: 0 auto;
+  }
+}
