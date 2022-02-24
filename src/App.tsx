@@ -1,11 +1,13 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import { Row, Col, Empty, Typography, Divider } from "antd";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";
 import Add from "./components/Add";
-import Filter from "./components/Sort";
+import Sort from "./components/Sort";
 import defaultProjects from "./projects.json";
 import Project from "./project";
+import "./App.css";
 
 const App: FC = () => {
   const initialProjects =
@@ -14,6 +16,7 @@ const App: FC = () => {
       : defaultProjects;
 
   const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [sortType, setSortType] = useState<string>("rating-asc");
 
   const bgColors = [
     "#789395",
@@ -32,43 +35,34 @@ const App: FC = () => {
     return bgColors[Math.floor(Math.random() * bgColors.length)];
   };
 
-  const sortProjects = (sortType: string) => {
-    // TODO: make this nicer?
+  const sortedProjects = useMemo(() => {
     if (sortType === "date-asc") {
-      setProjects(
-        projects
-          .slice()
-          .sort(
-            (a, b) =>
-              new Date(a.created_at).valueOf() -
-              new Date(b.created_at).valueOf()
-          )
-      );
+      return [...projects]
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf()
+        );
     } else if (sortType === "date-desc") {
-      setProjects(
-        projects
-          .slice()
-          .sort(
-            (a, b) =>
-              new Date(b.created_at).valueOf() -
-              new Date(a.created_at).valueOf()
-          )
-      );
+      return [...projects]
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf()
+        );
     } else if (sortType === "rating-asc") {
-      setProjects(projects.slice().sort((a, b) => a.rating - b.rating));
+      return [...projects].slice().sort((a, b) => a.rating - b.rating);
     } else if (sortType === "rating-desc") {
-      setProjects(projects.slice().sort((a, b) => b.rating - a.rating));
+      return [...projects].slice().sort((a, b) => b.rating - a.rating);
     }
-  };
 
-  // Initial page load hook
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => sortProjects("rating-asc"), []);
+    return [];
+  }, [sortType, projects]);
 
-  // Hook for when projects changes
+  // Hook for when projects state changes
   useEffect(() => {
-    localStorage.setItem("projects", JSON.stringify(projects));
-  }, [projects]);
+    localStorage.setItem("projects", JSON.stringify(sortedProjects));
+  }, [sortedProjects]);
 
   return (
     <div>
@@ -82,39 +76,51 @@ const App: FC = () => {
           />
         </Col>
         <Col xs={24} lg={12}>
-          <Filter sortHandler={(sortVal) => sortProjects(sortVal)} />
+          <Sort sortHandler={(sortVal: string) => setSortType(sortVal)} />
         </Col>
       </Row>
       <Divider />
-      <Row gutter={[16, 16]}>
-        {projects.length > 0 ? (
-          projects.map((project) => (
-            <Col key={project.id} xs={24} md={12} lg={6}>
-              <ProjectCard
-                name={project.name}
-                rating={project.rating}
-                url={project.url}
-                id={project.id}
-                createdAt={project.created_at}
-                bgColor={getRandomBgColor()}
-                removeHandler={(id) =>
-                  setProjects(projects.filter((p) => p.id !== id))
-                }
-              />
-            </Col>
-          ))
-        ) : (
-          <Col flex={1}>
-            <Empty
-              description={
-                <Typography.Text strong>
-                  No projects? Try adding some..
-                </Typography.Text>
-              }
-            />
-          </Col>
-        )}
-      </Row>
+      <TransitionGroup>
+        <Row gutter={[16, 16]}>
+          {sortedProjects.length > 0 ? (
+            sortedProjects.map((project) => (
+              <CSSTransition
+                key={project.id}
+                in
+                appear
+                timeout={300}
+                classNames="fade"
+              >
+                <Col xs={24} md={12} lg={6}>
+                  <ProjectCard
+                    name={project.name}
+                    rating={project.rating}
+                    url={project.url}
+                    id={project.id}
+                    createdAt={project.created_at}
+                    bgColor={getRandomBgColor()}
+                    removeHandler={(id) =>
+                      setProjects(projects.filter((p) => p.id !== id))
+                    }
+                  />
+                </Col>
+              </CSSTransition>
+            ))
+          ) : (
+            <CSSTransition in appear timeout={300} classNames="fade">
+              <Col flex={1}>
+                <Empty
+                  description={
+                    <Typography.Text strong>
+                      No projects? Try adding some..
+                    </Typography.Text>
+                  }
+                />
+              </Col>
+            </CSSTransition>
+          )}
+        </Row>
+      </TransitionGroup>
     </div>
   );
 };
