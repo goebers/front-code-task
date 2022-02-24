@@ -41,7 +41,11 @@ const App: FC = () => {
       <Header />
       <Row>
         <Col xs={24} lg={12}>
-          <Add addHandler={(e) => console.log(e)} />
+          <Add
+            addHandler={(newProject) =>
+              setProjects((projects) => [...projects, newProject])
+            }
+          />
         </Col>
         <Col xs={24} lg={12}>
           <Filter />

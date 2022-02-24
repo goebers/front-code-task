@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, Button, Typography } from "antd";
+import { Card, Space, Button, Typography, Rate } from "antd";
 import { DeleteFilled, StarFilled } from "@ant-design/icons";
 import { format } from "date-fns";
 
@@ -41,26 +41,17 @@ const ProjectCard: FC<ProjectCardProps> = ({
         />
       }
     >
-      <Typography.Paragraph>
-        {[...Array(5)].map((val, index) => {
-          return (
-            index < rating && (
-              <StarFilled
-                style={{
-                  color: "#FFE162",
-                  fontSize: "1.5rem",
-                  stroke: "#000",
-                  strokeWidth: 50,
-                  marginRight: "5px",
-                }}
-              />
-            )
-          );
-        })}
-      </Typography.Paragraph>
-      <Typography.Paragraph italic mark strong type="secondary">
-        Date added: {format(new Date(createdAt), "dd/MM/yyyy")}
-      </Typography.Paragraph>
+      <Space size="large" direction="vertical">
+        <Rate
+          disabled
+          count={rating}
+          value={rating}
+          character={<StarFilled style={{ stroke: "#000", strokeWidth: 50 }} />}
+        />
+        <Typography.Paragraph italic mark strong type="secondary">
+          Date added: {format(new Date(createdAt), "dd/MM/yyyy")}
+        </Typography.Paragraph>
+      </Space>
     </Card>
   </a>
 );
