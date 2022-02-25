@@ -55,7 +55,7 @@ const App: FC = () => {
   return (
     <div>
       <Header />
-      <Row style={{ margin: "2rem 0" }}>
+      <Row style={{ margin: "2rem 0" }} gutter={[0, 32]}>
         <Col xs={24} lg={12}>
           <Add
             addHandler={(newProject) =>
