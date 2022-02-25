@@ -1,11 +1,12 @@
 import { FC, useState, useEffect, useMemo } from "react";
 import { Row, Col, Empty, Typography, Divider } from "antd";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { Flipper, Flipped, spring } from "react-flip-toolkit";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";
 import Add from "./components/Add";
 import Sort from "./components/Sort";
-import defaultProjects from "./projects.json";
+import defaultProjects from "./defaultProjects.json";
+import bgColors from "./bgColors.json";
 import Project from "./project";
 import "./App.css";
 
@@ -17,19 +18,6 @@ const App: FC = () => {
 
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [sortType, setSortType] = useState<string>("rating-asc");
-
-  const bgColors = [
-    "#789395",
-    "#94B49F",
-    "#B4CFB0",
-    "#E5E3C9",
-    "#9AD0EC",
-    "#EFDAD7",
-    "#E3BEC6",
-    "#EAEAEA",
-    "#F9F9F9",
-    "#FBF7F0",
-  ];
 
   const getRandomBgColor = (): string => {
     return bgColors[Math.floor(Math.random() * bgColors.length)];
@@ -67,7 +55,7 @@ const App: FC = () => {
   return (
     <div>
       <Header />
-      <Row style={{ margin: "2rem 0", alignItems: "flex-end" }}>
+      <Row style={{ margin: "2rem 0" }}>
         <Col xs={24} lg={12}>
           <Add
             addHandler={(newProject) =>
@@ -75,22 +63,16 @@ const App: FC = () => {
             }
           />
         </Col>
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={12} className="sort-wrapper">
           <Sort sortHandler={(sortVal: string) => setSortType(sortVal)} />
         </Col>
       </Row>
       <Divider />
-      <TransitionGroup>
+      <Flipper flipKey={sortedProjects}>
         <Row gutter={[16, 16]}>
           {sortedProjects.length > 0 ? (
-            sortedProjects.map((project) => (
-              <CSSTransition
-                key={project.id}
-                in
-                appear
-                timeout={300}
-                classNames="fade"
-              >
+            sortedProjects.map((project, index) => (
+              <Flipped key={project.id} flipId={project.id}>
                 <Col xs={24} md={12} lg={6}>
                   <ProjectCard
                     name={project.name}
@@ -104,10 +86,10 @@ const App: FC = () => {
                     }
                   />
                 </Col>
-              </CSSTransition>
+              </Flipped>
             ))
           ) : (
-            <CSSTransition in appear timeout={300} classNames="fade">
+            <Flipped flipId={sortedProjects.length}>
               <Col flex={1}>
                 <Empty
                   description={
@@ -117,10 +99,10 @@ const App: FC = () => {
                   }
                 />
               </Col>
-            </CSSTransition>
+            </Flipped>
           )}
         </Row>
-      </TransitionGroup>
+      </Flipper>
     </div>
   );
 };
