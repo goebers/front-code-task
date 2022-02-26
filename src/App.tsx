@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useMemo } from "react";
 import { Row, Col, Empty, Typography, Divider } from "antd";
-import { Flipper, Flipped, spring } from "react-flip-toolkit";
+import { Flipper, Flipped } from "react-flip-toolkit";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";
 import Add from "./components/Add";
@@ -84,6 +84,7 @@ const App: FC = () => {
                     removeHandler={(id) =>
                       setProjects(projects.filter((p) => p.id !== id))
                     }
+                    data-testid="project-card"
                   />
                 </Col>
               </Flipped>
