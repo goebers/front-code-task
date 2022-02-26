@@ -77,7 +77,7 @@ const Add: FC<AddProps> = ({ addHandler }) => {
             label="Project name"
             name="name"
           >
-            <Input />
+            <Input placeholder="Cool project name" />
           </Form.Item>
           <Form.Item
             validateFirst
@@ -101,7 +101,7 @@ const Add: FC<AddProps> = ({ addHandler }) => {
             label="Project repository URL (GitHub)"
             name="url"
           >
-            <Input />
+            <Input placeholder="https://github.com/goebers/front-code-task" />
           </Form.Item>
           <Form.Item
             rules={[

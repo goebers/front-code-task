@@ -6,7 +6,7 @@ afterEach(() => {
   cleanup();
 });
 
-test("finds select component", async () => {
+test("finds 'sort'-component", async () => {
   render(<Sort sortHandler={(val) => {}} />);
 
   const sortElement = await screen.findByText("Rating (ascending)");
