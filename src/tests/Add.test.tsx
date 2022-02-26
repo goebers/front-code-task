@@ -24,7 +24,7 @@ afterEach(() => {
 });
 
 test("finds 'add'-component", async () => {
-  render(<Add addHandler={(val) => {}} />);
+  render(<Add addHandler={(project: Project) => {}} />);
 
   const addElement = await screen.findByText("Add new project");
   expect(addElement).toBeInTheDocument();

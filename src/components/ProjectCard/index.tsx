@@ -38,6 +38,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
             event.preventDefault();
             removeHandler(id);
           }}
+          data-testid="remove-button"
         />
       }
     >
