@@ -8,6 +8,6 @@ afterEach(() => {
 
 test("renders header title", () => {
   render(<Header />);
-  const titleElement = screen.getByText(/List of cool GitHub projects/i);
+  const titleElement = screen.getByText(/Cool GitHub projects/i);
   expect(titleElement).toBeInTheDocument();
 });

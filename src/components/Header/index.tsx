@@ -3,7 +3,7 @@ import { Typography } from "antd";
 
 const Header: FC = () => (
   <header style={{ paddingTop: "1.5rem" }}>
-    <Typography.Title>List of cool GitHub projects</Typography.Title>
+    <Typography.Title>Cool GitHub projects</Typography.Title>
   </header>
 );
 
