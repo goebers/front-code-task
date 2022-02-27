@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useMemo } from "react";
 import { Row, Col, Empty, Typography, Divider } from "antd";
-import { Flipper, Flipped } from "react-flip-toolkit";
+import { Flipper, Flipped, spring } from "react-flip-toolkit";
 import Header from "./components/Header";
 import ProjectCard from "./components/ProjectCard";
 import Add from "./components/Add";
@@ -9,6 +9,7 @@ import defaultProjects from "./defaultProjects.json";
 import bgColors from "./bgColors.json";
 import Project from "./project";
 import "./App.css";
+import anime from "animejs";
 
 const App: FC = () => {
   const initialProjects =
@@ -52,6 +53,35 @@ const App: FC = () => {
     localStorage.setItem("projects", JSON.stringify(sortedProjects));
   }, [sortedProjects]);
 
+  // Animate element appearing
+  const onProjectAppear = (element: HTMLElement, index: number) => {
+    anime({
+      targets: element,
+      opacity: 1,
+      translateY: 0,
+      duration: 300,
+      endDelay: index * 15,
+      easing: "linear",
+    });
+  };
+
+  // Animate element disappearing
+  const onProjectDisappear = (
+    element: HTMLElement,
+    index: number,
+    onComplete: () => void
+  ) => {
+    anime({
+      targets: element,
+      opacity: 0,
+      translateY: -15,
+      duration: 300,
+      delay: index * 5,
+      easing: "linear",
+      complete: onComplete,
+    });
+  };
+
   return (
     <div>
       <Header />
@@ -72,7 +102,13 @@ const App: FC = () => {
         <Row gutter={[16, 16]}>
           {sortedProjects.length > 0 ? (
             sortedProjects.map((project, index) => (
-              <Flipped key={project.id} flipId={project.id}>
+              <Flipped
+                key={project.id}
+                flipId={project.id}
+                stagger
+                onAppear={onProjectAppear}
+                onExit={onProjectDisappear}
+              >
                 <Col xs={24} md={12} lg={6}>
                   <ProjectCard
                     name={project.name}
